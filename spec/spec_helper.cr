@@ -152,7 +152,7 @@ class Workspace
 
   def cleanup
     @files.values.each(&.delete)
-    Dir.rmdir(@root)
+    Dir.delete(@root)
   end
 end
 

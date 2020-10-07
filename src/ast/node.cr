@@ -12,6 +12,10 @@ module Mint
         {input: input, from: from, to: to}
       end
 
+      def owns?(node)
+        false
+      end
+
       def static?
         false
       end
@@ -25,7 +29,7 @@ module Mint
       end
 
       def new_line?
-        source.includes?('\n')
+        source.strip.includes?('\n')
       end
     end
   end

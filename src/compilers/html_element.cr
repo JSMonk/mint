@@ -1,7 +1,7 @@
 module Mint
   class Compiler
-    def compile(value : Array(Ast::Interpolation | String))
-      if value.any?(Ast::Interpolation)
+    def compile(value : Array(Ast::Node | String))
+      if value.any?(Ast::Node)
         value.map do |part|
           case part
           when String
@@ -97,7 +97,7 @@ module Mint
       end
 
       node.ref.try do |ref|
-        attributes["ref"] = "(element) => { this._#{ref.value} = new #{just}(element) }"
+        attributes["ref"] = "(element) => { this._#{ref.value} = element }"
       end
 
       attributes =

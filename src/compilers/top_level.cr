@@ -128,10 +128,10 @@ module Mint
         end
 
       elements =
-        (enums + records + providers + routes + modules + components + static + stores + [footer] + suites)
+        (enums + records + modules + providers + routes + components + static + stores + [footer] + suites)
           .reject!(&.empty?)
 
-      js.statements(elements)
+      replace_skipped(js.statements(elements))
     end
 
     # --------------------------------------------------------------------------
@@ -213,6 +213,7 @@ module Mint
         const TestContext = mint.TestContext;
         const ReactDOM = mint.ReactDOM;
         const Decoder = mint.Decoder;
+        const Encoder = mint.Encoder;
         const DateFNS = mint.DateFNS;
         const Record = mint.Record;
         const React = mint.React;

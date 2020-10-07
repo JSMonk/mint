@@ -1,10 +1,10 @@
 .PHONY: build
 build:
-	shards build --error-on-warnings --error-trace
+	shards build --error-on-warnings --error-trace --progress
 
 .PHONY: spec
 spec:
-	crystal spec --error-on-warnings --error-trace
+	crystal spec --error-on-warnings --error-trace --progress
 
 .PHONY: formatter
 formatter:
@@ -19,7 +19,7 @@ test: spec formatter ameba
 
 .PHONY: test-core
 test-core: build
-	cd core/tests && ../../bin/mint test
+	cd core/tests && ../../bin/mint test -b firefox
 
 .PHONY: development
 development: build

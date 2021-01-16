@@ -83,6 +83,10 @@ module Mint
     end
 
     def compile_script
+      # Fetch options from the applications
+      json =
+        MintJson.parse_current
+
       # Create a brand new TypeChecker.
       type_checker =
         TypeChecker.new(ast)
@@ -91,7 +95,10 @@ module Mint
       type_checker.check
 
       # Compile.
-      @script = Compiler.compile type_checker.artifacts
+      @script = Compiler.compile type_checker.artifacts, {
+        optimize:   false,
+        css_prefix: json.application.css_prefix,
+      }
       @error = nil
     rescue exception : Error
       @error = exception.to_html

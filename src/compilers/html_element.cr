@@ -1,9 +1,11 @@
 module Mint
   class Compiler
-    def compile(value : Array(Ast::Node | String))
+    def compile(value : Array(Ast::Node | String), quote_string : Bool = false)
       if value.any?(Ast::Node)
         value.map do |part|
           case part
+          when Ast::StringLiteral
+            compile part, quote: quote_string
           when String
             "`#{part}`"
           else
@@ -48,7 +50,7 @@ module Mint
       class_name =
         unless style_nodes.empty?
           style_nodes.join(' ') do |style_node|
-            style_builder.style_pool.of(style_node, nil)
+            style_builder.prefixed_class_name(style_node)
           end
         end
 

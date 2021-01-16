@@ -44,10 +44,10 @@ Also, visit [Awesome Mint](https://github.com/egajda/awesome-mint), to see more 
 
 Read the general [Contributing guide](https://github.com/crystal-lang/crystal/blob/master/CONTRIBUTING.md), and then:
 
-1. Fork it ( <https://github.com/mint-lang/mint/fork> )
-2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
-4. Push to the branch (git push origin my-new-feature)
+1. Fork it (<https://github.com/mint-lang/mint/fork>)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
 ### Ways you can contribute
@@ -85,6 +85,7 @@ You can find an explanation in this issue: <https://github.com/mint-lang/mint/is
 ## Contributors
 
 This project exists thanks to all the people who contribute.
+
 <a href="https://github.com/mint-lang/mint/graphs/contributors"><img src="https://opencollective.com/mint/contributors.svg?width=890&button=false" /></a>
 
 ## Backers
@@ -114,7 +115,7 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 ---
 
-[![Build Status](https://travis-ci.org/mint-lang/mint.svg?branch=master)](https://travis-ci.org/mint-lang/mint)
+![Linux CI](https://github.com/mint-lang/mint/workflows/Linux%20CI/badge.svg)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/mint-lang/Lobby)
 [![Discord](https://img.shields.io/discord/698214718241767445)](https://discord.gg/NXFUJs2)
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/mint-lang)

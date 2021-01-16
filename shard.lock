@@ -6,11 +6,11 @@ shards:
 
   ameba:
     git: https://github.com/crystal-ameba/ameba.git
-    version: 0.13.0
+    version: 0.13.3
 
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
-    version: 0.9.8
+    version: 0.9.8+git.commit.7183bfde8d86a976a6912f582b51cbd1783456af
 
   diff:
     git: https://github.com/MakeNowJust/crystal-diff.git
@@ -25,8 +25,8 @@ shards:
     version: 0.1.4
 
   kemal:
-    git: https://github.com/mint-lang/kemal.git
-    version: 0.26.1+git.commit.327c659912f0bf03f113c6a145c4a7b142ae96cc
+    git: https://github.com/kemalcr/kemal.git
+    version: 0.27.0
 
   kilt:
     git: https://github.com/jeromegn/kilt.git
@@ -49,6 +49,6 @@ shards:
     version: 0.1.1
 
   tree_template:
-    git: https://github.com/anykeyh/tree_template.git
-    version: 0.1.0+git.commit.3fcb71ee6852040077dd1a2c8c55c67f4a95ba4e
+    git: https://github.com/gdotdesign/tree_template.git
+    version: 0.1.0+git.commit.7e24c92208cc99938f3fbd8f5fecda22bcbe3cc3
 

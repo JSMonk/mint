@@ -7,8 +7,8 @@ module Mint
   class NamePool(T, B)
     INITIAL = 'a'.pred.to_s
 
-    @cache : Hash(Tuple(B, T), String) = {} of Tuple(B, T) => String
-    @current : Hash(B, String) = {} of B => String
+    @cache = {} of Tuple(B, T) => String
+    @current = {} of B => String
 
     def of(subject : T, base : B)
       @cache[{base, subject}] ||= begin
@@ -52,7 +52,7 @@ module Mint
             items =
               hash
                 .each_with_object({} of String => String) do |(key, value), memo|
-                  memo["[`#{key}`]"] = compile value
+                  memo["[`#{key}`]"] = compile value, quote_string: true
                 end
 
             js.object(items) unless items.empty?
@@ -124,7 +124,7 @@ module Mint
     getter selectors, property_pool, name_pool, style_pool, variables, ifs
     getter cases
 
-    def initialize
+    def initialize(@css_prefix : String? = nil)
       # Three name pools so there would be no clashes,
       # which also good for optimizations.
       @property_pool = NamePool(String, String).new
@@ -189,10 +189,14 @@ module Mint
       false
     end
 
+    def prefixed_class_name(node)
+      @css_prefix.to_s + style_pool.of(node, nil)
+    end
+
     # The main entry point for processing a "style" tag.
     def process(node : Ast::Style)
       selectors =
-        ["." + style_pool.of(node, nil)]
+        ["." + prefixed_class_name(node)]
 
       process(node.body, nil, nil, selectors, %w[], node)
     end

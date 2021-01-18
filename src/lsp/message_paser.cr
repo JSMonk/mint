@@ -1,8 +1,12 @@
 module LSP
+  # This module is resposible for parsing HTTP like requests from an IO.
   module MessageParser
     extend self
 
-    def self.read_headers(io)
+    alias Header = Tuple(String, String)
+
+    # Reads the headers from the given IO.
+    def self.read_headers(io : IO) : Array(Header)
       headers = [] of Tuple(String, String)
 
       loop do
@@ -14,7 +18,8 @@ module LSP
       headers
     end
 
-    def self.read_header(io)
+    # Reads a header from the given IO.
+    def self.read_header(io : IO) : Header | Nil
       io.gets.try do |raw|
         parts =
           raw.split(':')
@@ -23,7 +28,9 @@ module LSP
       end
     end
 
-    def self.parse(io)
+    # Parses a message (header + contents) from a given IO
+    # and yields the contents.
+    def self.parse(io : IO)
       headers =
         read_headers(io)
 
@@ -33,46 +40,7 @@ module LSP
           .try(&.last)
 
       if content_length
-        content =
-          io.read_string(content_length.to_i)
-
-        JSON.parse(content)
-      end
-    end
-
-    def self.parse(io)
-      headers =
-        read_headers(io)
-
-      content_length =
-        headers
-          .find(&.first.==("Content-Length"))
-          .try(&.last)
-
-      if content_length
-        content =
-          io.read_string(content_length.to_i)
-
-        json =
-          JSON.parse(content)
-
-        method =
-          json["method"]?
-
-        id =
-          json["id"]?
-
-        result =
-          json["result"]?
-
-        error =
-          json["error"]?
-
-        if id && (error || result)
-          # TODO: Handle response to request
-        elsif method
-          yield method.as_s, content
-        end
+        yield io.read_string(content_length.to_i)
       end
     end
   end

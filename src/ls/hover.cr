@@ -6,7 +6,7 @@ module Mint
 
       # Fallback handler for nil, obviously it should not happen.
       def hover(node : Nil, workspace) : Array(String | Nil)
-        ["SHOULD NOT HAPPEN"] of String | Nil
+        ["This should not happen!Please create an issue about this!"] of String | Nil
       end
 
       # Fallback handler for nodes that does not have a handler yet.
@@ -15,7 +15,7 @@ module Mint
           type_of(node, workspace)
 
         [
-          "DEBUG HOVER INFO: #{node.class}\n",
+          "Type information for: #{node.class}\n",
           type,
         ]
       end
@@ -83,13 +83,7 @@ module Mint
           end
 
         # Send the response.
-        server.send({
-          jsonrpc: "2.0",
-          id:      id,
-          result:  {
-            contents: contents.compact,
-          },
-        })
+        {contents: contents.compact}
       end
     end
   end

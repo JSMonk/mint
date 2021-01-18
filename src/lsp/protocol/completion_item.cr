@@ -52,15 +52,15 @@ module LSP
     @[JSON::Field(key: "insertText")]
     property insert_text : String
 
-    def initialize(@documentation,
-                   @filter_text,
-                   @insert_text,
-                   @deprecated,
-                   @preselect,
-                   @sort_text,
-                   @detail,
-                   @label,
-                   @kind)
+    def initialize(@documentation = "",
+                   @deprecated = false,
+                   @preselect = false,
+                   @sort_text = false,
+                   @filter_text = "",
+                   @insert_text = "",
+                   @detail = "",
+                   @label = "",
+                   @kind = 1)
     end
   end
 end

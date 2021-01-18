@@ -1,5 +1,4 @@
 module LSP
-  # Format document on type options.
   struct DocumentOnTypeFormattingOptions
     include JSON::Serializable
 
@@ -8,8 +7,8 @@ module LSP
     property first_trigger_character : String
 
     # More trigger characters.
-    @[JSON::Field(key: "firstTriggerCharacter")]
-    property more_trigger_character : Array(String)
+    @[JSON::Field(key: "moreTriggerCharacter")]
+    property more_trigger_character : Array(String) | Nil
 
     def initialize(@first_trigger_character, @more_trigger_character)
     end

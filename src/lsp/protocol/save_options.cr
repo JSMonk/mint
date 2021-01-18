@@ -1,5 +1,4 @@
 module LSP
-  # Save options.
   struct SaveOptions
     include JSON::Serializable
 

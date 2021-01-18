@@ -1,5 +1,4 @@
 module LSP
-  # Document link options.
   struct DocumentLinkOptions
     include JSON::Serializable
 

@@ -19,9 +19,9 @@ module Mint
           class_name = item.class
 
           if index == 0
-            log class_name.to_s
+            log(class_name.to_s)
           else
-            log "#{" " * (index - 1)} ↳ #{class_name}"
+            log("#{" " * (index - 1)} ↳ #{class_name}")
           end
         end
       end

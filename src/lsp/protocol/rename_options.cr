@@ -1,5 +1,4 @@
 module LSP
-  #  Rename options.
   struct RenameOptions
     include JSON::Serializable
 

@@ -188,7 +188,7 @@ def notify_lsp(method, message)
   server.read
 end
 
-def expect_lsp(id, method, message, expected)
+def lsp(id, method, message)
   in_io =
     IO::Memory.new
 
@@ -210,17 +210,5 @@ def expect_lsp(id, method, message, expected)
 
   server.read
 
-  result =
-    LSP::MessageParser
-      .parse(out_io.rewind)
-      .to_pretty_json
-
-  expected =
-    expected.to_pretty_json
-
-  begin
-    result.should eq(expected)
-  rescue error
-    fail diff(expected, result)
-  end
+  LSP::MessageParser.parse(out_io.rewind) { |content| content }
 end

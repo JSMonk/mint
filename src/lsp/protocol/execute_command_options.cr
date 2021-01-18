@@ -1,5 +1,4 @@
 module LSP
-  # Execute command options.
   struct ExecuteCommandOptions
     include JSON::Serializable
 

@@ -22,10 +22,10 @@ module LSP
     property save : SaveOptions
 
     def initialize(
-      @open_close,
-      @change,
-      @will_save,
       @will_save_wait_until,
+      @open_close,
+      @will_save,
+      @change,
       @save
     )
     end

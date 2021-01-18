@@ -2,15 +2,18 @@ module LSP
   class TextDocumentPositionParams
     include JSON::Serializable
 
+    # The text document.
     @[JSON::Field(key: "textDocument")]
     property text_document : TextDocumentIdentifier
+
+    # The position inside the text document.
     property position : Position
 
-    # Non part of the specification. TODO: Move to Mint namespace.
+    # Non part of the specification.
     @[JSON::Field(ignore: true)]
     @offset : Int32?
 
-    # Non part of the specification. TODO: Move to Mint namespace.
+    # Non part of the specification.
     @[JSON::Field(ignore: true)]
     @uri : URI?
 

@@ -1,5 +1,4 @@
 module LSP
-  #  Signature help options.
   struct SignatureHelpOptions
     include JSON::Serializable
 

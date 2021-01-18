@@ -14,18 +14,19 @@ module LSP
     @[JSON::Field(ignore: true)]
     @uri : URI?
 
+    # Parses the URI
     def uri
       @uri ||= URI.parse(text_document.uri)
     end
 
+    # Returns the path of the URI
     def path
       uri.try(&.path).to_s
     end
 
-    def offset
+    # Converts the line/coulmn values into an offset
+    def offset(contents)
       @offset ||= begin
-        contents = File.read(uri.path.to_s)
-
         char_count = 0
         line_count = 0
         line_char_count = 0

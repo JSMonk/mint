@@ -6,7 +6,12 @@ module Mint
       def execute(server)
         capabilities =
           LSP::ServerCapabilities.new(
-            text_document_sync: 1,
+            text_document_sync: LSP::TextDocumentSyncOptions.new(
+              change: LSP::TextDocumentSyncKind::Full,
+              will_save_wait_until: true,
+              open_close: true,
+              will_save: false,
+              save: LSP::SaveOptions.new(include_text: false)),
             hover_provider: true,
             completion_provider: LSP::CompletionOptions.new(
               resolve_provider: true,

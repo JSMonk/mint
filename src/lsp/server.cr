@@ -20,13 +20,25 @@ module LSP
       @out.flush
     end
 
+    def show_message(type, message)
+      send({
+        jsonrpc: "2.0",
+        method:  "window/showMessageRequest",
+        id:      UUID.random.to_s,
+        params:  {
+          message: message.to_s,
+          type:    type,
+        },
+      })
+    end
+
     def log(message)
       send({
         jsonrpc: "2.0",
         method:  "window/logMessage",
         params:  {
           type:    4,
-          message: message,
+          message: message.to_s,
         },
       })
     end

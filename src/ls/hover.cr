@@ -20,6 +20,7 @@ module Mint
         ]
       end
 
+      # Returns the type information of a node from the workspace
       def type_of(node : Ast::Node, workspace)
         workspace
           .type_checker
@@ -52,9 +53,6 @@ module Mint
             # We get the stack of nodes under the cursor
             stack =
               server.nodes_at_cursor(params)
-
-            # TODO: Print the stack for debugging purposes.
-            server.debug_stack(stack)
 
             node = stack[0]?
             parent = stack[1]?

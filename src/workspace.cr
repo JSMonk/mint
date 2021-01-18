@@ -107,6 +107,10 @@ module Mint
         .merge(Core.ast)
     end
 
+    def [](file)
+      @cache[normalize_path(file)]?
+    end
+
     def initialize_cache
       files = self.files
       files.each_with_index do |file, index|
@@ -186,6 +190,12 @@ module Mint
       @error = error
 
       call "change", error
+    end
+
+    def format(file)
+      Formatter
+        .new(json.formatter_config)
+        .format(self[file])
     end
 
     def update(contents, file)

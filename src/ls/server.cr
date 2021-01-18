@@ -1,14 +1,20 @@
 module Mint
   module LS
     class Server < LSP::Server
+      # Lifecycle methods
       method "initialize", Initialize
-      method "textDocument/hover", Hover
-      method "textDocument/didChange", DidChange
-      method "textDocument/completion", Completion
       method "shutdown", Shutdown
       method "exit", Exit
 
-      def debug_stack(stack)
+      # Text document related methods
+      method "textDocument/willSaveWaitUntil", WillSaveWaitUntil
+      method "textDocument/formatting", Formatting
+      method "textDocument/completion", Completion
+      method "textDocument/didChange", DidChange
+      method "textDocument/hover", Hover
+
+      # Logs the given stack.
+      def debug_stack(stack : Array(Ast::Node))
         stack.each_with_index do |item, index|
           class_name = item.class
 
@@ -20,13 +26,14 @@ module Mint
         end
       end
 
-      def nodes_at_cursor(params : LSP::TextDocumentPositionParams)
+      # Returns the nodes at the given cursor (position)
+      def nodes_at_cursor(params : LSP::TextDocumentPositionParams) : Array(Ast::Node)
         workspace =
           Mint::Workspace[params.path]
 
         workspace.ast.nodes.select do |item|
           next unless item.input.file == params.path
-          item.from <= params.offset <= item.to
+          item.from <= params.offset(item.input.input) <= item.to
         end
       end
     end

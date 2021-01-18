@@ -56,7 +56,23 @@ module LSP
         json =
           JSON.parse(content)
 
-        yield json["method"].as_s, content
+        method =
+          json["method"]?
+
+        id =
+          json["id"]?
+
+        result =
+          json["result"]?
+
+        error =
+          json["error"]?
+
+        if id && (error || result)
+          # TODO: Handle response to request
+        elsif method
+          yield method.as_s, content
+        end
       end
     end
   end

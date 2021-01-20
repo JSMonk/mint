@@ -31,7 +31,9 @@ module Mint
 
       workspace = Workspace.current
       workspace.format = auto_format
+
       init(workspace)
+
       workspace.on "change" do |result|
         update result
         notify
@@ -62,8 +64,8 @@ module Mint
         end
       end
 
-      elapsed = TimeFormat.auto(elapsed).colorize.mode(:bold).to_s
-      terminal.io.print "#{prefix}... #{elapsed}".ljust(line.size) + "\n"
+      elapsed = TimeFormat.auto(elapsed).colorize.mode(:bold)
+      terminal.io.puts "#{prefix}... #{elapsed}".ljust(line.size)
 
       @ast = workspace.ast
       compile_script

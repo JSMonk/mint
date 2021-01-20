@@ -38,12 +38,10 @@ module Mint
     def self.[](path)
       root = root_from_file(path)
 
-      @@workspaces[root] ||= begin
-        workspace = Workspace.new(root)
-        workspace.update_cache
-        workspace.watch
-        workspace
-      end
+      @@workspaces[root] ||=
+        Workspace.new(root)
+          .tap(&.update_cache)
+          .tap(&.watch)
     end
 
     alias ChangeProc = Proc(Ast | Error, Nil)
@@ -53,11 +51,11 @@ module Mint
     @pattern = [] of String
 
     getter type_checker : TypeChecker
-    getter error : Error | Nil
-    getter json : MintJson
-    getter root : String
-    getter formatter : Formatter
     getter cache : Hash(String, Ast)
+    getter formatter : Formatter
+    getter json : MintJson
+    getter error : Error?
+    getter root : String
 
     property format : Bool = false
 
@@ -66,7 +64,7 @@ module Mint
         File.join(@root, "mint.json")
 
       @json =
-        FileUtils.cd @root do
+        FileUtils.cd(@root) do
           MintJson.from_file(json_path)
         end
 
@@ -93,7 +91,7 @@ module Mint
 
     def packages : Array(Workspace)
       pattern =
-        File.join(root, ".mint/packages/**/mint.json")
+        File.join(root, ".mint", "packages", "**", "mint.json")
 
       Dir.glob(pattern).map do |file|
         Workspace.from_file(file)
@@ -107,14 +105,22 @@ module Mint
         .merge(Core.ast)
     end
 
-    def [](file)
+    def []?(file)
       @cache[normalize_path(file)]?
+    end
+
+    def [](file)
+      @cache[normalize_path(file)]
+    end
+
+    protected def []=(file, value)
+      @cache[normalize_path(file)] = value
     end
 
     def initialize_cache
       files = self.files
       files.each_with_index do |file, index|
-        @cache[normalize_path(file)] ||= Parser.parse(file)
+        self[file] ||= Parser.parse(file)
 
         yield file, index, files.size
       end
@@ -162,7 +168,7 @@ module Mint
     def files_pattern : Array(String)
       json
         .source_directories
-        .map { |dir| File.join(root, dir, "/**/*.mint") }
+        .map { |dir| File.join(root, dir, "**", "*.mint") }
     end
 
     def static_pattern : Array(String)
@@ -176,9 +182,7 @@ module Mint
       files.each do |file|
         path = File.real_path(file)
 
-        @cache[normalize_path(file)] ||= begin
-          process(File.read(path), path)
-        end
+        self[file] ||= process(File.read(path), path)
       end
 
       check!
@@ -199,7 +203,7 @@ module Mint
     end
 
     def update(contents, file)
-      @cache[normalize_path(file)] = process(contents, file)
+      self[file] = process(contents, file)
       check!
       @error = nil
 
@@ -252,15 +256,13 @@ module Mint
 
     private def all_static_pattern : Array(String)
       packages
-        .map(&.static_pattern)
-        .flatten
+        .flat_map(&.static_pattern)
         .concat(static_pattern)
     end
 
     private def all_files_pattern : Array(String)
       packages
-        .map(&.files_pattern)
-        .flatten
+        .flat_map(&.files_pattern)
         .concat(files_pattern)
     end
   end

@@ -110,8 +110,8 @@ module LSP
 end
 
 class Workspace
+  @files = {} of String => File
   @id : String
-  @files : Hash(String, File) = {} of String => File
 
   def workspace
     Mint::Workspace[File.join(@root, "test.file")]
@@ -147,7 +147,7 @@ class Workspace
   end
 
   def file_path(name)
-    "file://" + @files[name]?.try(&.path).to_s
+    "file://#{@files[name]?.try(&.path)}"
   end
 
   def cleanup

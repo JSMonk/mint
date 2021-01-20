@@ -9,6 +9,6 @@ module LSP
     # The trigger character (a single character) that has trigger code complete.
     # Is undefined if `triggerKind !== CompletionTriggerKind.TriggerCharacter`
     @[JSON::Field(key: "triggerCharacter")]
-    property trigger_character : String
+    property trigger_character : String | Nil
   end
 end

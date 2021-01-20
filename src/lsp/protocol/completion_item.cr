@@ -52,7 +52,14 @@ module LSP
     @[JSON::Field(key: "insertText")]
     property insert_text : String
 
-    def initialize(@documentation = "",
+    # The format of the insert text. The format applies to both the
+    # `insertText` property and the `newText` property of a provided
+    # `textEdit`. If omitted defaults to `InsertTextFormat.PlainText`.
+    @[JSON::Field(key: "insertTextFormat")]
+    property insert_text_format : Int32 | Nil
+
+    def initialize(@insert_text_format = 2,
+                   @documentation = "",
                    @deprecated = false,
                    @preselect = false,
                    @sort_text = false,

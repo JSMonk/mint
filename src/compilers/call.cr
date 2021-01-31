@@ -7,6 +7,10 @@ module Mint
       arguments =
         compile node.arguments, ", "
 
+      if node.labeled_call?
+        
+      end
+
       if node.safe?
         js.iif do
           result =

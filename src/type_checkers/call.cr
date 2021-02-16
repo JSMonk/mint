@@ -4,6 +4,7 @@ module Mint
     type_error CallArgumentTypeMismatch
     type_error CallTypeMismatch
     type_error CallNotAFunction
+    type_error CallArgumentNotFound
 
     def check(node : Ast::Call)
       function_type =
@@ -22,7 +23,6 @@ module Mint
       } unless function_type.name == "Function"
 
       argument_size = function_type.parameters.size - 1
-      parameters = [] of Checkable
 
       raise CallArgumentSizeMismatch, {
         "call_size" => node.arguments.size.to_s,
@@ -30,7 +30,10 @@ module Mint
         "node"      => node,
       } if node.arguments.size > argument_size
 
-      node.arguments.each_with_index do |argument, index|
+      parameters = Array.new(argument_size)
+      arguments = get_arguments_with_index node function_type
+
+      arguments.each do |argument, index|
         argument_type =
           resolve argument
 
@@ -45,7 +48,7 @@ module Mint
           "node"     => node,
         } unless Comparer.compare(function_argument_type, argument_type)
 
-        parameters << argument_type
+        parameters[index] = argument_type
       end
 
       # This is a partial application
@@ -83,6 +86,30 @@ module Mint
 
         resolve_type(result.parameters.last)
       end
+    end
+  end
+
+  private def get_arguments_with_index(call_node, function_type): Hash(Expression, Int)
+    if !call_node.labeled_call?
+      Hash.new(call_node.arguments, 0...call_node.arguments.size)
+    else
+      declarated_arguments = Hash.new()  
+      function_type.parameters.each_with_index do |argument, index|
+        declarated_arguments[argument.name] = index
+      end
+
+      applied_arguments = Hash.new()
+      call_node.arguments.each_with_index do |argument, index|
+        raise CallArgumentNotFound, {
+          "function" => function_type,
+          "call"     => call_node,
+          "node"     => argument,
+        } unless declarated_arguments.has_key? argument.name
+        
+        declarated_argument_index = declarated_arguments[argument.name]
+        applied_arguments[argument.value] = declarated_argument_index
+      end
+      applied_arguments
     end
   end
 end

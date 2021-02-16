@@ -4,7 +4,7 @@ module Mint
       getter name
 
       def initialize(@name : Variable,
-                     @value: Expresion,
+                     @value : Expresion,
                      @input : Data,
                      @from : Int32,
                      @to : Int32)
